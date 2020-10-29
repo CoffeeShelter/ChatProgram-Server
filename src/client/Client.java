@@ -29,8 +29,8 @@ public class Client implements Runnable {
 	public void run() {
 		String msg = null;
 		System.out.println(client.getInetAddress().toString() + " 클라이언트 쓰레드 실행");
-		Server.roomList.add(roomVector);	//서버 룸리스트에 해당 클라이언트 룸 리스트 추가
-		System.out.println("클라이언트 방 리스트 수 : "+Server.roomList.size(	));
+		Server.roomList.add(roomVector); // 서버 룸리스트에 해당 클라이언트 룸 리스트 추가
+		System.out.println("클라이언트 방 리스트 수 : " + Server.roomList.size());
 		while (true) {
 			msg = recv(); // 클라이언트 측 요구사항 받기
 
@@ -53,7 +53,7 @@ public class Client implements Runnable {
 			}
 		}
 
-		Server.roomList.remove(roomVector);	//서버 룸 리스트에서 해당 클라이언트 룸 리스트 삭제
+		Server.roomList.remove(roomVector); // 서버 룸 리스트에서 해당 클라이언트 룸 리스트 삭제
 		System.out.println(client.getInetAddress().toString() + " 클라이언트 쓰레드 종료");
 	}
 
@@ -71,7 +71,7 @@ public class Client implements Runnable {
 				room.addClient(this);
 				roomVector.add(room);
 
-				send(code[2] + "/" + "[ " + code[2] + " ] 채팅방이 생성되었습니다.");
+				send(code[2] + "/" + code[2] + " 방이 생성되었습니다." + "/" + "SYSTEM");
 				break;
 			}
 
@@ -82,10 +82,11 @@ public class Client implements Runnable {
 		case "in": {
 			boolean isRoom = false;
 			for (Vector<Room> rList : Server.roomList) {
-				if (rList.size()==0) continue;	//해당 클라이언트 방 리스트가 0개이면 건너뜀.
-				
+				if (rList.size() == 0)
+					continue; // 해당 클라이언트 방 리스트가 0개이면 건너뜀.
+
 				for (Room room : rList) {
-					//해당 방을 찾은 경우
+					// 해당 방을 찾은 경우
 					if (room.getTitle().equals(code[1])) { // code[1] = 방제목
 						room.addClient(this);
 						roomVector.add(room);
@@ -94,8 +95,9 @@ public class Client implements Runnable {
 						break;
 					}
 				}
-				if(isRoom) break;
-				//해당 방을 못 찾았을 경우
+				if (isRoom)
+					break;
+				// 해당 방을 못 찾았을 경우
 				else {
 					// send(code[1] + "<- this room not found");
 				}
@@ -110,23 +112,25 @@ public class Client implements Runnable {
 			String nickName = code[2];
 			boolean isOk = false;
 			for (Vector<Room> roomList : Server.roomList) {
-				if (roomList.size()==0) continue;	//해당 클라이언트 방 리스르 갯수가 0개이면 건너뜀.
+				if (roomList.size() == 0)
+					continue; // 해당 클라이언트 방 리스르 갯수가 0개이면 건너뜀.
 
 				for (Room rooms : roomList) {
 					if (rooms.getTitle().equals(roomName)) {
-						rooms.deleteClient(this);	//해당 방을 갖고 있는 모든 클라이언트에서 해당 클라이언트 정보 제거
-						this.roomVector.remove(rooms);	//해당 클라이언트 방 리스트에서 나가려는 방 제거
-						
-						//해당 방에 남아있는 클라이언트가 있을 경우 해당 방으로 퇴장 문자 전송
+						rooms.deleteClient(this); // 해당 방을 갖고 있는 모든 클라이언트에서 해당 클라이언트 정보 제거
+						this.roomVector.remove(rooms); // 해당 클라이언트 방 리스트에서 나가려는 방 제거
+
+						// 해당 방에 남아있는 클라이언트가 있을 경우 해당 방으로 퇴장 문자 전송
 						if (rooms.getCountClient() != 0) {
 							rooms.goodByePrint(nickName);
 						}
 						isOk = true;
 						break;
 					}
-					if(isOk) break;
+					if (isOk)
+						break;
 				}
-				
+
 			}
 
 			break;
@@ -149,9 +153,10 @@ public class Client implements Runnable {
 			String titleList = "_refresh_";
 			Vector<String> preventDup = new Vector<String>();
 			for (Vector<Room> vectorRoom : Server.roomList) {
-				if (vectorRoom.size()==0) continue;
+				if (vectorRoom.size() == 0)
+					continue;
 				for (Room room : vectorRoom) {
-					if(!preventDup.contains(room.getTitle())) {
+					if (!preventDup.contains(room.getTitle())) {
 						preventDup.add(room.getTitle());
 						titleList = titleList + "/" + room.getTitle();
 					}

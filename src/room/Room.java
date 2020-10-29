@@ -29,25 +29,26 @@ public class Room {
 	// 전송 약속 -> [방제목]/[내용] -> 해당 방 제목을 가진 채팅 방에만 메세지 출력
 
 	// 방 전체 메세지 보내기
+	// <방제목>/<메세지>/<닉네임>
 	public void sendRoom(String msg) {
 		// msg = 방제목/<메세지>/닉네임
 		String[] code = msg.split("/");
 		for (Client client : clientList) {
-			client.send(code[0] + "/" + "[" + code[2] + "] " + code[1]); // 방제목/<닉네임:메세지>
+			client.send(code[0] + "/" + code[1] + "/" + code[2]);
 		}
 	}
 
 	// 입장 메세지
 	public void welcomePrint(String name) {
 		for (Client client : clientList) {
-			client.send(title + "/[" + name + "] 님이 입장하셨습니다.");
+			client.send(title + "/" + "[" + name + "]님이 입장 하셨습니다." + "/" + "SYSTEM");
 		}
 	}
 
 	// 퇴장 메세지
 	public void goodByePrint(String name) {
 		for (Client client : clientList) {
-			client.send(title + "/[" + name + "] 님이 퇴장하셨습니다.");
+			client.send(title + "/" + "[" + name + "]님이 퇴장 하셨습니다." + "/" + "SYSTEM");
 		}
 	}
 
