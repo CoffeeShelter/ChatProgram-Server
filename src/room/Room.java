@@ -31,10 +31,18 @@ public class Room {
 	// 방 전체 메세지 보내기
 	// <방제목>/<메세지>/<닉네임>
 	public void sendRoom(String msg) {
-		// msg = 방제목/<메세지>/닉네임
+		// msg = <방제목>/<메세지>/<닉네임>
 		String[] code = msg.split("/");
 		for (Client client : clientList) {
 			client.send(code[0] + "/" + code[1] + "/" + code[2]);
+		}
+	}
+
+	// 방 전체 이모티콘 보내기
+	// emoticon/<방제목>/<이모티콘 종류>/<닉네임>
+	public void sendEmoticon(String roomTitle, String emoticonName, String senderName) {
+		for (Client client : clientList) {
+			client.send("emoticon/" + roomTitle + "/" + emoticonName + "/" + senderName);
 		}
 	}
 

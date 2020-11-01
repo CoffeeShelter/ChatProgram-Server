@@ -169,6 +169,19 @@ public class Client implements Runnable {
 			break;
 		}
 
+		// 이모티콘 전송
+		// emoticon/<방 제목>/<이모티콘 종류>/<보내는 사람 닉네임>
+		case "emoticon": {
+			if (roomVector != null) {
+				for (Room room : roomVector) {
+					if (room.getTitle().equals(code[1])) {
+						room.sendEmoticon(code[1], code[2], code[3]);
+					}
+				}
+			}
+			break;
+		}
+
 		// 명령어가 아닐 시 일반 전송 문자로 인식
 		// 방제목/메세지/닉네임
 		default:
