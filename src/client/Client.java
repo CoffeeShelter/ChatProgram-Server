@@ -147,7 +147,37 @@ public class Client implements Runnable {
 			send("exit");
 			closeClient();
 			break;
-
+			
+		// 검색한 채팅방 리스트 출력
+		// search/<방제목>
+		case "search":
+		{
+			Vector<String> temp = new Vector<String>();
+			String roomTitle = code[1];
+			for (Vector<Room> vectorRoom : Server.roomList) {
+				if (vectorRoom.size() == 0)
+					continue;
+				for (Room room : vectorRoom) {
+					if(room.getTitle().contains(roomTitle))
+					{
+						if(!temp.contains(room.getTitle()))
+						{
+							temp.add(room.getTitle());
+						}
+					}
+				}
+			}
+			
+			String searchCommand = "search";
+			for(String title : temp)
+			{
+				searchCommand = searchCommand + "/" + title;
+			}
+			
+			send(searchCommand);
+			
+			break;
+		}
 		// 방 리스트 정보 요청 // 방 제목 벡터 전송
 		case "refresh": {
 			System.out.println("새로고침 요청");
