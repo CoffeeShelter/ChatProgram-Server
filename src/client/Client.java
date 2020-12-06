@@ -150,6 +150,7 @@ public class Client implements Runnable {
 
 		// 规 府胶飘 沥焊 夸没 // 规 力格 氦磐 傈价
 		case "refresh": {
+			System.out.println("货肺绊魔 夸没");
 			String titleList = "_refresh_";
 			Vector<String> preventDup = new Vector<String>();
 			for (Vector<Room> vectorRoom : Server.roomList) {
@@ -165,6 +166,33 @@ public class Client implements Runnable {
 
 			// titleList => _refresh_/<规力格>/<规力格>/......./<规力格>
 			send(titleList);
+
+			break;
+		}
+		
+		// 盲泼规 八祸
+		// search/<八祸绢>
+		case "search": {
+			Vector<String> temp = new Vector<String>();
+			String roomTitle = code[1];
+			for (Vector<Room> vectorRoom : Server.roomList) {
+				if (vectorRoom.size() == 0)
+					continue;
+				for (Room room : vectorRoom) {
+					if (room.getTitle().contains(roomTitle)) {
+						if (!temp.contains(room.getTitle())) {
+							temp.add(room.getTitle());
+						}
+					}
+				}
+			}
+
+			String searchCommand = "search";
+			for (String title : temp) {
+				searchCommand = searchCommand + "/" + title;
+			}
+
+			send(searchCommand);
 
 			break;
 		}
