@@ -63,7 +63,7 @@ public class Client implements Runnable {
 		switch (code[0]) {
 		// 추가 요청
 		// add/room/<방제목>
-		case "add":
+		case "add":{
 
 			switch (code[1]) {
 			case "room":
@@ -76,7 +76,7 @@ public class Client implements Runnable {
 			}
 
 			break;
-
+		}
 		// < 방 입장 요청 >
 		// in/<방제목>/<닉네임>
 		case "in": {
@@ -153,6 +153,10 @@ public class Client implements Runnable {
 		case "search":
 		{
 			Vector<String> temp = new Vector<String>();
+			if(code.length == 1)
+			{
+				break;
+			}
 			String roomTitle = code[1];
 			for (Vector<Room> vectorRoom : Server.roomList) {
 				if (vectorRoom.size() == 0)
@@ -199,34 +203,6 @@ public class Client implements Runnable {
 
 			break;
 		}
-		
-		// 채팅방 검색
-		// search/<검색어>
-		case "search": {
-			Vector<String> temp = new Vector<String>();
-			String roomTitle = code[1];
-			for (Vector<Room> vectorRoom : Server.roomList) {
-				if (vectorRoom.size() == 0)
-					continue;
-				for (Room room : vectorRoom) {
-					if (room.getTitle().contains(roomTitle)) {
-						if (!temp.contains(room.getTitle())) {
-							temp.add(room.getTitle());
-						}
-					}
-				}
-			}
-
-			String searchCommand = "search";
-			for (String title : temp) {
-				searchCommand = searchCommand + "/" + title;
-			}
-
-			send(searchCommand);
-
-			break;
-		}
-
 		// 이모티콘 전송
 		// emoticon/<방 제목>/<이모티콘 종류>/<보내는 사람 닉네임>
 		case "emoticon": {
